@@ -21,6 +21,9 @@
 	"module": "dist/index.esm.js",
 	"types": "dist/index.d.ts",
 	"sideEffects": false,
+	"publishConfig": {
+		"access": "public"
+	},
 	"scripts": {
 		"test": "jest --coverage --detectOpenHandles --forceExit",
 		"test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand --detectOpenHandles --forceExit",

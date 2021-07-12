@@ -22,6 +22,9 @@
 	"module": "dist/index.esm.js",
 	"types": "dist/index.d.ts",
 	"sideEffects": false,
+	"publishConfig": {
+		"access": "public"
+	},
 	"scripts": {
 		"test": "jest --coverage --detectOpenHandles --forceExit",
 		"test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand --detectOpenHandles --forceExit",
@@ -77,6 +80,7 @@
 		"@babel/runtime": "^7.12.0",
 		"@garfish/browser-vm": "0.0.31",
 		"@magic-microservices/magic": "^1.1.1",
+		"@magic-microservices/portal-utils": "^0.1.0",
 		"blueimp-md5": "^2.18.0"
 	}
 }

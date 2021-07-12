@@ -21,6 +21,9 @@
 	"module": "dist/index.esm.js",
 	"types": "dist/index.d.ts",
 	"sideEffects": false,
+	"publishConfig": {
+		"access": "public"
+	},
 	"scripts": {
 		"test": "jest --coverage --detectOpenHandles --forceExit",
 		"test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand --detectOpenHandles --forceExit",
@@ -55,6 +58,7 @@
 		"typescript-transform-paths": "^2.0.0"
 	},
 	"dependencies": {
+		"@magic-microservices/portal-utils": "^0.1.0",
 		"fs-extra": "^9.1.0",
 		"html-webpack-plugin": "^5.2.0",
 		"path": "^0.12.7",

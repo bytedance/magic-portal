@@ -10,7 +10,9 @@ import {
   getHash,
   IPortalHtmlParserResult,
 } from '@magic-microservices/portal-utils';
-import Sandbox from '@garfish/browser-vm';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { Sandbox } from '@garfish/browser-vm/dist/browser-vm.cjs.prod';
 import md5 from 'blueimp-md5';
 
 import { EventEmitter, EventType } from './EventEmitter';
