@@ -15,9 +15,6 @@
         "*.spec.js",
         "*.spec.ts"
       ]
-    },
-    "bootstrap": {
-      "npmClientArgs": ["--no-package-lock"]
     }
   }
 }

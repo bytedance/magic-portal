@@ -22,6 +22,9 @@
 	"module": "dist/index.esm.js",
 	"types": "dist/index.d.ts",
 	"sideEffects": false,
+	"publishConfig": {
+		"access": "public"
+	},
 	"scripts": {
 		"test": "jest --coverage --detectOpenHandles --forceExit",
 		"test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand --detectOpenHandles --forceExit",
@@ -73,6 +76,8 @@
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.12.0",
+		"@magic-microservices/portal": "^0.1.0",
+		"@magic-microservices/portal-utils": "^0.1.0",
 		"tiny-invariant": "^1.1.0",
 		"tiny-warning": "^1.0.3"
 	},

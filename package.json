@@ -8,8 +8,8 @@
     "dev:prepare": "npm i && scripty",
     "bootstrap": "lerna bootstrap --force-local",
     "build": "lerna run build",
-    "version:force": "rm -rf packages/**/package-lock.json && lerna version --force-publish",
-    "version": "rm -rf packages/**/package-lock.json && lerna version",
+    "version:force": "lerna version --force-publish",
+    "version": "lerna version",
     "publish": "npm run lint:fix && lerna publish from-package --conventional-commits --pre-dist-tag=next"
   },
   "repository": {
@@ -37,7 +37,7 @@
       "eslint --fix"
     ]
   },
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
