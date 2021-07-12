@@ -1,0 +1,23 @@
+{
+  "packages": ["packages/*"],
+  "version": "independent",
+  "command": {
+    "version": {
+      "allowBranch": ["master", "feature-*", "fix-*", "release-*"],
+      "message": "chore(release): publish"
+    },
+    "publish": {
+      "message": "chore(release): publish",
+      "ignoreChanges": [
+        "test/**/*",
+        "**/__fixtures__/**",
+        "**/__tests__/**",
+        "*.spec.js",
+        "*.spec.ts"
+      ]
+    },
+    "bootstrap": {
+      "npmClientArgs": ["--no-package-lock"]
+    }
+  }
+}

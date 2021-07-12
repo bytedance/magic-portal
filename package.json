@@ -1,0 +1,69 @@
+{
+  "name": "magic-portal",
+  "private": true,
+  "description": "puzzles",
+  "scripts": {
+    "lint": "scripty",
+    "lint:fix": "scripty",
+    "dev:prepare": "npm i && scripty",
+    "bootstrap": "lerna bootstrap --force-local",
+    "build": "lerna run build",
+    "version:force": "rm -rf packages/**/package-lock.json && lerna version --force-publish",
+    "version": "rm -rf packages/**/package-lock.json && lerna version",
+    "publish": "npm run lint:fix && lerna publish from-package --conventional-commits --pre-dist-tag=next"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": {
+    "name": "Ranjay Zheng",
+    "email": "magic-microservices@bytedance.com"
+  },
+  "keywords": [
+    "magic",
+    "magic-microservices",
+    "puzzle"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "packages/**/src/**/*.{js,ts}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.12.0",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/preset-typescript": "^7.10.4",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.18.0",
+    "@typescript-eslint/parser": "^4.18.0",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-dev-expression": "^0.2.2",
+    "eslint": "^7.6.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-babel": "^5.3.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "husky": "^2.3.0",
+    "lerna": "^3.22.1",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1",
+    "scripty": "^1.9.1",
+    "typescript": "^4.2.3"
+  }
+}
