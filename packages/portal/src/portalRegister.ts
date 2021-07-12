@@ -10,7 +10,7 @@ import {
   getHash,
   IPortalHtmlParserResult,
 } from '@magic-microservices/portal-utils';
-import Sandbox from '@byted/garfish-sandbox';
+import Sandbox from '@garfish/browser-vm';
 import md5 from 'blueimp-md5';
 
 import { EventEmitter, EventType } from './EventEmitter';
