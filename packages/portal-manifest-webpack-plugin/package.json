@@ -1,6 +1,6 @@
 {
 	"name": "@magic-microservices/portal-manifest-webpack-plugin",
-	"version": "1.0.0",
+	"version": "0.1.0",
 	"description": "Portal Manifest Webpack Plugin",
 	"keywords": [
 		"magic",
@@ -21,6 +21,20 @@
 	"module": "dist/index.esm.js",
 	"types": "dist/index.d.ts",
 	"sideEffects": false,
+	"scripts": {
+		"test": "jest --coverage --detectOpenHandles --forceExit",
+		"test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand --detectOpenHandles --forceExit",
+		"codecov": "codecov",
+		"watch:check-types": "ttsc --watch",
+		"watch:cjs": "cross-env TARGET=cjs rollup -w -c build/config.js",
+		"watch:esm": "cross-env TARGET=esm rollup -w -c build/config.js",
+		"build:check-types": "ttsc",
+		"build:cjs": "cross-env NODE_ENV=production TARGET=cjs rollup -c build/config.js",
+		"build:esm": "cross-env NODE_ENV=production TARGET=esm rollup -c build/config.js",
+		"prepublishOnly": "npm run build",
+		"watch": "npm-run-all --parallel watch:*",
+		"build": "rm -rf dist && npm-run-all --parallel build:*"
+	},
 	"license": "MIT",
 	"devDependencies": {
 		"@rollup/plugin-alias": "^3.1.1",
