@@ -1,0 +1,82 @@
+{
+  "name": "@magic-microservices/puzzle",
+  "version": "1.0.0",
+  "moduleName": "puzzle",
+  "description": "Puzzle",
+  "keywords": [
+    "magic",
+    "microfrontends",
+    "microservices",
+    "microfrontend",
+    "application",
+    "puzzle"
+  ],
+  "author": {
+    "name": "Ranjay Zheng",
+    "email": "magic-microservices@bytedance.com"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "test": "jest --coverage --detectOpenHandles --forceExit",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand --detectOpenHandles --forceExit",
+    "codecov": "codecov",
+    "prepublishOnly": "npm run build",
+    "watch:check-types": "ttsc --watch",
+    "watch:cjs": "cross-env TARGET=web-cjs-dev rollup -w -c build/config.js",
+    "watch:esm": "cross-env TARGET=web-esm-dev rollup -w -c build/config.js",
+    "watch:browser": "cross-env TARGET=web-esm-browser-dev rollup -w -c build/config.js",
+    "watch:umd": "cross-env TARGET=web-umd-dev rollup -w -c build/config.js",
+    "watch:system": "cross-env TARGET=web-system-dev rollup -w -c build/config.js",
+    "watch": "npm-run-all --parallel watch:*",
+    "serve": "http-server ./dist -p 3003 --cors",
+    "dev": "npm-run-all --parallel watch serve",
+    "check-types": "ttsc",
+    "build:cjs:dev": "cross-env TARGET=web-cjs-dev rollup -c build/config.js",
+    "build:esm:dev": "cross-env TARGET=web-esm-dev rollup -c build/config.js",
+    "build:browser:dev": "cross-env TARGET=web-esm-browser-dev rollup -c build/config.js",
+    "build:umd:dev": "cross-env TARGET=web-umd-dev rollup -c build/config.js",
+    "build:system:dev": "cross-env TARGET=web-system-dev rollup -c build/config.js",
+    "build:esm:prod": "cross-env TARGET=web-esm-prod rollup -c build/config.js",
+    "build:browser:prod": "cross-env TARGET=web-esm-browser-prod rollup -c build/config.js",
+    "build:umd:prod": "cross-env TARGET=web-umd-prod rollup -c build/config.js",
+    "build:system:prod": "cross-env TARGET=web-system-prod rollup -c build/config.js",
+    "build": "rm -rf dist && npm run check-types && npm-run-all --parallel build:*:*"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-alias": "^3.1.1",
+    "@rollup/plugin-babel": "^5.0.0",
+    "@rollup/plugin-commonjs": "^11.1.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^7.1.3",
+    "@rollup/plugin-replace": "^2.4.1",
+    "@types/jest": "^26.0.15",
+    "codecov": "^3.8.1",
+    "cross-env": "^7.0.2",
+    "electron": "^10.1.4",
+    "http-server": "^0.12.3",
+    "jest": "^26.6.0",
+    "jest-electron": "^0.1.11",
+    "npm-run-all": "^4.1.5",
+    "rollup": "^2.7.6",
+    "rollup-plugin-external-globals": "^0.5.0",
+    "rollup-plugin-terser": "^6.1.0",
+    "ts-jest": "^26.4.1",
+    "ttypescript": "^1.5.10",
+    "typescript-transform-paths": "^2.0.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.12.0",
+    "@magic-microservices/portal": "^0.0.12",
+    "@magic-microservices/portal-utils": "^0.0.3",
+    "tiny-invariant": "^1.1.0",
+    "tiny-warning": "^1.0.3"
+  },
+  "gitHead": "2ebd6b9eac2b63cd334ce1849e7fdda580e9d5d5"
+}
