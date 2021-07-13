@@ -16,7 +16,7 @@ Make micro-components and micro-frontends never that easy again.
 
 ## Overview
 
-A lightweight micro-frontend solution based on [magic](https://github.com/bytedance/magic-microservices).
+A lightweight micro-frontend  / micro-component solution inspired by [Portals](https://github.com/WICG/portals) proposal
 
 
 ## Feature
@@ -25,3 +25,37 @@ A lightweight micro-frontend solution based on [magic](https://github.com/byteda
 - 🚀 Portability: write your code and use it with any frameworks.
 - 🔨 Adaptable: an adapter for any JS module, friendly to existing code.
 - 💪 Web Components driven design
+
+## Quick Start
+
+### Installation
+
+```bash
+$ npm install @magic-microservices/portal
+# or
+$ yarn add @magic-microservices/portal
+```
+
+
+### Register portal component
+
+```typescript
+import portal, { PortalHtmlEntryPlugin } from '@magic-microservices/portal'
+
+await portal({
+  plugins: [new PortalHtmlEntryPlugin()], // fetch and parse html
+})
+```
+
+### Use built-in portal component 🎉
+
+Registration should be placed before instantiation. Portal html entry plugin uses fetch under the hood, 
+make sure the corresponding website's CORS has configured.
+
+```html
+<magic-portal src='//some-where-you-want-to-go' />
+```
+
+## Inspired by
+
+Magic-portal is inspired by [Portals](https://github.com/WICG/portals) proposal, thanks!

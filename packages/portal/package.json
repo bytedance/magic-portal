@@ -1,6 +1,6 @@
 {
 	"name": "@magic-microservices/portal",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"moduleName": "portal",
 	"description": "portal",
 	"keywords": [
@@ -82,5 +82,6 @@
 		"@magic-microservices/magic": "^1.1.1",
 		"@magic-microservices/portal-utils": "^0.1.0",
 		"blueimp-md5": "^2.18.0"
-	}
+	},
+	"gitHead": "4ec634bc1f53eb7de532e63d8e243b08d0b6aa52"
 }

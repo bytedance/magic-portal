@@ -14,7 +14,7 @@ import { IDefaultPortalProps, MagicPortalElement } from './portalRegister';
 import { defaultFetch } from './utils/defaultFetch';
 import { removeOriginFromUrl } from './utils/removeOriginFromUrl';
 
-export const HTML_ENTRY_ATTRIBUTE_NAME = 'html' as const;
+export const HTML_ENTRY_ATTRIBUTE_NAME = 'src' as const;
 
 export interface IPortalHtmlEntryLoaderOptions {
   fetch?: (url: string) => Promise<string>;
