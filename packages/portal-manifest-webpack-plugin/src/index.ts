@@ -10,7 +10,6 @@ import webpack, { Compilation, Compiler } from 'webpack';
 import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import { portalHtmlParser, ICustomDOMMatcher } from '@magic-microservices/portal-utils';
 
-const { RawSource } = webpack.sources;
 export interface IPortalWebpackPluginOptions {
   matchers?: ICustomDOMMatcher[];
   rootId?: string;
@@ -40,6 +39,44 @@ class PuzzleManifestWebpackPlugin {
     this.matchers = matchers;
     this.rootId = rootId;
     this.writeToFileEmit = writeToFileEmit;
+  }
+
+  apply(compiler: Compiler): void {
+    compiler.hooks.compilation.tap(this.constructor.name, (compilation) => {
+      // for webpackv4 and v5
+      // https://github.com/jantimon/html-webpack-plugin/issues/1451
+      const {
+        sources: { RawSource },
+      } = compiler.webpack || webpack;
+
+      const hook = this.getHook(compiler, compilation);
+      if (!hook) return;
+
+      hook.tapAsync(
+        this.constructor.name,
+        async (data: IBeforeEmitData, cb: () => void) => {
+          const manifestFileName = this.getTargetDir(
+            compiler,
+            (data.plugin.options as HtmlWebpackPlugin.Options).filename as string,
+          );
+
+          const result = portalHtmlParser(data.html);
+
+          const manifestId = path.relative(
+            compiler.options.output.path || '',
+            manifestFileName,
+          );
+
+          compilation.emitAsset(manifestId, new RawSource(JSON.stringify(result)));
+
+          if (this.writeToFileEmit) {
+            await fs.outputJSON(manifestFileName, result);
+          }
+
+          cb();
+        },
+      );
+    });
   }
 
   // 获取html webpack plugin的hook
@@ -81,38 +118,6 @@ class PuzzleManifestWebpackPlugin {
       htmlPath,
       `portal-manifest-${htmlName}.json`,
     );
-  }
-
-  apply(compiler: Compiler): void {
-    compiler.hooks.compilation.tap(this.constructor.name, (compilation) => {
-      const hook = this.getHook(compiler, compilation);
-      if (!hook) return;
-
-      hook.tapAsync(
-        this.constructor.name,
-        async (data: IBeforeEmitData, cb: () => void) => {
-          const manifestFileName = this.getTargetDir(
-            compiler,
-            (data.plugin.options as HtmlWebpackPlugin.Options).filename as string,
-          );
-
-          const result = portalHtmlParser(data.html);
-
-          const manifestId = path.relative(
-            compiler.options.output.path || '',
-            manifestFileName,
-          );
-
-          compilation.emitAsset(manifestId, new RawSource(JSON.stringify(result)));
-
-          if (this.writeToFileEmit) {
-            await fs.writeJson(manifestFileName, result);
-          }
-
-          cb();
-        },
-      );
-    });
   }
 }
 
