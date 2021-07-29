@@ -1,6 +1,6 @@
 {
 	"name": "@magic-microservices/portal-manifest-webpack-plugin",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Portal Manifest Webpack Plugin",
 	"keywords": [
 		"magic",
@@ -58,7 +58,7 @@
 		"typescript-transform-paths": "^2.0.0"
 	},
 	"dependencies": {
-		"@magic-microservices/portal-utils": "^0.1.0",
+		"@magic-microservices/portal-utils": "^0.1.1",
 		"fs-extra": "^9.1.0",
 		"html-webpack-plugin": "^5.2.0",
 		"path": "^0.12.7",
