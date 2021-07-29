@@ -3,7 +3,7 @@
   "version": "independent",
   "command": {
     "version": {
-      "allowBranch": ["master", "feature-*", "fix-*", "release-*"],
+      "allowBranch": ["main", "feature-*", "fix-*", "release-*"],
       "message": "chore(release): publish"
     },
     "publish": {

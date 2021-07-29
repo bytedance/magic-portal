@@ -6,7 +6,7 @@
     "lint": "scripty",
     "lint:fix": "scripty",
     "dev:prepare": "npm i && scripty",
-    "bootstrap": "lerna bootstrap --force-local",
+    "bootstrap": "lerna bootstrap --force-local --no-ci",
     "build": "lerna run build",
     "version:force": "lerna version --force-publish",
     "version": "lerna version",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git@github.com:bytedance/magic-portal.git"
   },
   "author": {
     "name": "Ranjay Zheng",
