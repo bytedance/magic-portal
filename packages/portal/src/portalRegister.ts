@@ -10,7 +10,6 @@ import {
   getHash,
   IPortalHtmlParserResult,
 } from '@magic-microservices/portal-utils';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 import { Sandbox } from '@garfish/browser-vm';
 import { Module } from '@garfish/browser-vm/dist/types';
 import md5 from 'blueimp-md5';
