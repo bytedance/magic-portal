@@ -10,9 +10,8 @@ import {
   getHash,
   IPortalHtmlParserResult,
 } from '@magic-microservices/portal-utils';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { Sandbox } from '@garfish/browser-vm/dist/browser-vm.cjs.prod';
+import { Sandbox } from '@garfish/browser-vm';
+import { Module } from '@garfish/browser-vm/dist/types';
 import md5 from 'blueimp-md5';
 
 import { EventEmitter, EventType } from './EventEmitter';
@@ -130,44 +129,43 @@ async function buildPortalContent({
   // for SSR
   renderContent && (renderContainer.innerHTML = renderContent);
 
-  let sandboxModulesOverrides = {};
+  let sandboxModulesOverrides: Module[] = [];
   if (historyIsolation) {
     const { location, history, History, historyEventEmitters } = historySandbox(
       initialPath || window.location.href,
     );
     webcomponentsIns.historyEventEmitters = historyEventEmitters;
-    sandboxModulesOverrides = {
-      history: () => {
-        return {
-          override: {
-            history,
-            History,
-          },
-        };
-      },
-      location: () => ({
+    sandboxModulesOverrides = sandboxModulesOverrides.concat([
+      () => ({
+        override: {
+          history,
+          History,
+        },
+      }),
+      () => ({
         override: {
           location,
         },
       }),
-    };
+    ]);
   }
 
   // create sandbox
   const sandbox = new Sandbox({
     el: () => container,
     protectVariable: () => ['HTMLElement', 'EventTarget', 'Event'],
-    useStrict: true,
+    useStrict: false,
+    strictIsolation: true,
     namespace: md5(JSON.stringify(manifest)) + getHash(),
-    modules: {
+    modules: [
       // hack garfish sandbox error
       ...sandboxModulesOverrides,
-      module: () => ({
+      () => ({
         override: {
           module: {},
         },
       }),
-      portalHost: () => ({
+      () => ({
         override: {
           portalHost: {
             shadowRoot: webcomponentsIns.shadowRoot,
@@ -178,19 +176,20 @@ async function buildPortalContent({
           },
         },
       }),
-    },
+    ],
   });
   Object.keys(overrides || {}).forEach((key) => {
-    if (sandbox.context && overrides) {
-      sandbox.context[key] = overrides[key];
+    if (sandbox.global && overrides) {
+      // TODO: garfish will fix this type err
+      sandbox.global[key as unknown as number] = overrides[key] as never;
     }
   });
-  if (historyIsolation && sandbox.context) {
+  if (historyIsolation && sandbox.global) {
     const { historyEventEmitters } = webcomponentsIns;
-    const rawAddEventListener = sandbox.context.addEventListener;
-    const rawRemoveEventListener = sandbox.context.removeEventListener;
-    const rawDispatchEvent = sandbox.context.dispatchEvent;
-    sandbox.context.dispatchEvent = (event: Event): boolean => {
+    const rawAddEventListener = sandbox.global.addEventListener;
+    const rawRemoveEventListener = sandbox.global.removeEventListener;
+    const rawDispatchEvent = sandbox.global.dispatchEvent;
+    sandbox.global.dispatchEvent = (event: Event): boolean => {
       if (event instanceof PopStateEvent || event instanceof HashChangeEvent) {
         historyEventEmitters.emit(
           event instanceof PopStateEvent ? 'popstate' : 'hashchange',
@@ -203,7 +202,7 @@ async function buildPortalContent({
       return rawDispatchEvent(event);
     };
     // 重写 historyIsolation 下的 popstate & hashchange 事件监听，保证和 location 表现一致
-    sandbox.context.addEventListener = (
+    sandbox.global.addEventListener = (
       type: string,
       listener: EventListener,
       options?: boolean | AddEventListenerOptions,
@@ -211,9 +210,9 @@ async function buildPortalContent({
       if (historyEvents.includes(type as HistoryEvents)) {
         return historyEventEmitters.on(type as HistoryEvents, listener);
       }
-      return rawAddEventListener.call(sandbox.context, type, listener, options);
+      return rawAddEventListener.call(sandbox.global, type, listener, options);
     };
-    sandbox.context.removeEventListener = (
+    sandbox.global.removeEventListener = (
       type: string,
       listener: EventListener,
       options?: boolean | AddEventListenerOptions,
@@ -221,7 +220,7 @@ async function buildPortalContent({
       if (historyEvents.includes(type as HistoryEvents)) {
         return historyEventEmitters.off(type as HistoryEvents, listener);
       }
-      return rawRemoveEventListener.call(sandbox.context, type, listener, options);
+      return rawRemoveEventListener.call(sandbox.global, type, listener, options);
     };
   }
   webcomponentsIns.sandbox = sandbox;
@@ -237,7 +236,7 @@ async function buildPortalContent({
     if (scriptSrc) {
       scriptContent = await fetch(scriptSrc);
     }
-    scriptContent && sandbox.execScript(scriptContent, scriptSrc);
+    scriptContent && sandbox.execScript(scriptContent, {}, scriptSrc);
   }, Promise.resolve());
   // close loading
   loadingContainer.style.display = 'none';
